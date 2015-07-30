@@ -13,6 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        window.cpp
+        window.cpp \
+    calc.cpp
 
 HEADERS  += window.h
