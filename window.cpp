@@ -89,7 +89,7 @@ window::window(QWidget *parent)
     mainLayout->addWidget(alpha);
 
     connect(alpha, SIGNAL(textChanged(QString)), SLOT(craftCountValue(QString)));
-    connect(alpha, SIGNAL(valueChanged(QString)), editMoney, SLOT(setText(QString)));
+    /*connect(alpha, SIGNAL(valueChanged(QString)), editMoney, SLOT(setText(QString)));*/
 
 }
 
