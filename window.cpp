@@ -28,11 +28,10 @@
     QTextBrowser *calcAfter;
 */
 
-
 window::window(QWidget *parent)
     : QMainWindow(parent)
 {
-    setFixedSize(400, 500);
+    setFixedSize(400, 600);
     centralWidget = new QWidget(this);
     this->setCentralWidget( centralWidget );
     mainLayout = new QGridLayout( centralWidget );
@@ -65,6 +64,15 @@ window::window(QWidget *parent)
     selMode->addItem("NSSD");
     selMode->addItem("BSSD");
 
+    editMoney->setValue(0);
+    editMoney->setRange(0, 99999999);
+    editCry->setValue(0);
+    editCry->setRange(0, 99999999);
+    editOre->setValue(0);
+    editOre->setRange(0, 99999999);
+
+    calcCreate->setText("0");
+
     mainLayout->addWidget(textMode);
     mainLayout->addWidget(selMode);
     mainLayout->addWidget(textMoney);
@@ -88,13 +96,23 @@ window::window(QWidget *parent)
 
     mainLayout->addWidget(alpha);
 
-    connect(alpha, SIGNAL(textChanged(QString)), SLOT(craftCountValue(QString)));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+
+
     /*connect(alpha, SIGNAL(valueChanged(QString)), editMoney, SLOT(setText(QString)));*/
 
 }
 
-void window::craftCountValue(QString str) {editMoney->setValue(str.toInt());}
-void window::cryBuyValue(QString){}
+void window::craftCountValue()
+{
+    calcCreate->setText(QString::number(editMoney->value() - (editCry->value() * editOre->value())));
+}
+void window::cryBuyValue(QString)
+{
+    calcBCry->setText("123");
+}
 void window::oreBuyValue(QString){}
 void window::oddValue(QString){}
 void window::incomeValue(QString){}

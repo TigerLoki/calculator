@@ -21,7 +21,7 @@ public:
     ~window();
 
 private slots:
-    void craftCountValue(QString);
+    void craftCountValue();
     void cryBuyValue(QString);
     void oreBuyValue(QString);
     void oddValue(QString);
