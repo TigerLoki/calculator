@@ -6,14 +6,14 @@
 
 QT       += core gui
 
+QMAKE_LFLAGS = -static -static-libgcc -static-libstdc++
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = calculator
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
-        window.cpp \
-    calc.cpp
+        window.cpp
 
 HEADERS  += window.h

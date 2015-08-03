@@ -5,10 +5,10 @@
 
 class QComboBox;
 class QLabel;
-class QLineEdit;
 class QTextBrowser;
 class QGridLayout;
 class QSpinBox;
+class QTimer;
 
 class window : public QMainWindow
 {
@@ -18,14 +18,13 @@ class window : public QMainWindow
 
 public:
     window(QWidget *parent = 0);
-    int mode, count, cost;
-    int cryCount, oreCount;
-    int divV, moneyV, cryV, oreV, totalV;
-    int cry, ore, odd, income, after, alpha, a;
+    int count, cost; //перменные комбобокса
+    int cryCount, oreCount; //количество
+    int divV, moneyV, cryV, oreV, totalV; //глобальные перменные
+    int cry, ore, odd, income, after, alpha; //внутренние переменные
     ~window();
 
 private slots:
-    //void divClass();
     void changeMode();
     void craftCountValue();
     void cryBuyValue();
@@ -33,6 +32,7 @@ private slots:
     void oddValue();
     void incomeValue();
     void afterValue();
+    void update();
 
 private:
     QLabel *textMode;
@@ -49,13 +49,13 @@ private:
     QSpinBox *editMoney;
     QSpinBox *editCry;
     QSpinBox *editOre;
-    //QSpinBox *div;
     QTextBrowser *calcCreate;
     QTextBrowser *calcBCry;
     QTextBrowser *calcBOre;
     QTextBrowser *calcOdd;
     QTextBrowser *calcIncome;
     QTextBrowser *calcAfter;
+    QTimer *timer;
 };
 
 #endif // WINDOW_H
