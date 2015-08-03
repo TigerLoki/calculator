@@ -5,6 +5,7 @@
 #include <QTextBrowser>
 #include <QSpinBox>
 #include <QTimer>
+#include <QStack>
 
 
 window::window(QWidget *parent)
@@ -15,6 +16,7 @@ window::window(QWidget *parent)
     centralWidget = new QWidget(this);
     this->setCentralWidget( centralWidget );
     mainLayout = new QGridLayout( centralWidget );
+
 
     textMode = new QLabel("Выберите режим:",this);
     textMoney = new QLabel("Введите количество денег:",this);
@@ -37,11 +39,11 @@ window::window(QWidget *parent)
     calcIncome = new QTextBrowser(this);
     calcAfter = new QTextBrowser(this);
     timer = new QTimer(this);
-
+    //добавляю элементы в комбобокс
     selMode->addItem("SSD");
     selMode->addItem("NSSD");
     selMode->addItem("BSSD");
-
+    //выставляю размер окошек
     selMode->setFixedSize(232, 23);
     editMoney->setFixedSize(232, 23);
     editCry->setFixedSize(232, 23);
@@ -52,13 +54,11 @@ window::window(QWidget *parent)
     calcOdd->setFixedSize(232, 23);
     calcIncome->setFixedSize(232, 23);
     calcAfter->setFixedSize(232, 23);
-
-    //mainLayout->setAlignment(selMode, Qt::AlignCenter);
-
+    //выставляю значения для спинбокса, потому что счет идет до 100
     editMoney->setRange(0, 99999999);
     editCry->setRange(0, 99999999);
     editOre->setRange(0, 99999999);
-
+    //добавляю виджеты на лейаут
     mainLayout->addWidget(textMode);
     mainLayout->addWidget(selMode);
     mainLayout->addWidget(textMoney);
