@@ -5,28 +5,10 @@
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QSpinBox>
-/*
- *  QLabel *textMode;
-    QLabel *textMoney;
-    QLabel *textCry;
-    QLabel *textOre;
-    QLabel *textCreate;
-    QLabel *textBCry;
-    QLabel *textBOre;
-    QLabel *textOdd;
-    QLabel *textIncome;
-    QLabel *textAfter;
-    QComboBox *combo;
-    QLineEdit *editMoney;
-    QLineEdit *editCry;
-    QLineEdit *editOre;
-    QTextBrowser *calcCreate;
-    QTextBrowser *calcBCry;
-    QTextBrowser *calcBOre;
-    QTextBrowser *calcOdd;
-    QTextBrowser *calcIncome;
-    QTextBrowser *calcAfter;
-*/
+#include <QString>
+#include <iostream>
+using namespace std;
+
 
 window::window(QWidget *parent)
     : QMainWindow(parent)
@@ -37,8 +19,6 @@ window::window(QWidget *parent)
     mainLayout = new QGridLayout( centralWidget );
 
     /*for test*/
-    alpha = new QLineEdit;
-
     textMode = new QLabel("Выберите режим:",this);
     textMoney = new QLabel("Введите количество денег:",this);
     textCry = new QLabel("Введите стоимость кристалла:",this);
@@ -63,15 +43,29 @@ window::window(QWidget *parent)
     selMode->addItem("SSD");
     selMode->addItem("NSSD");
     selMode->addItem("BSSD");
+    selMode->setCurrentIndex(0);
 
-    editMoney->setValue(0);
-    editMoney->setRange(0, 99999999);
-    editCry->setValue(0);
-    editCry->setRange(0, 99999999);
-    editOre->setValue(0);
-    editOre->setRange(0, 99999999);
+    if (selMode->currentIndex() == 0)
+    {
+        count = 156;
+        cost = 10;
+        cryCount = 1;
+        oreCount = 3;
+    }
+
+    editMoney->setValue(1);
+    editMoney->setRange(1, 99999999);
+    editCry->setValue(1);
+    editCry->setRange(1, 99999999);
+    editOre->setValue(1);
+    editOre->setRange(1, 99999999);
 
     calcCreate->setText("0");
+    calcBCry->setText("0");
+    calcBOre->setText("0");
+    calcOdd->setText("0");
+    calcIncome->setText("0");
+    calcAfter->setText("0");
 
     mainLayout->addWidget(textMode);
     mainLayout->addWidget(selMode);
@@ -94,29 +88,91 @@ window::window(QWidget *parent)
     mainLayout->addWidget(textAfter);
     mainLayout->addWidget(calcAfter);
 
-    mainLayout->addWidget(alpha);
-
+    connect(selMode, SIGNAL(currentIndexChanged(int)), SLOT(changeMode()));
     connect(editMoney, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(cryBuyValue()));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(oreBuyValue()));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(oddValue()));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(incomeValue()));
+    connect(editMoney, SIGNAL(valueChanged(int)), SLOT(afterValue()));
     connect(editCry, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(cryBuyValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(oreBuyValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(oddValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(incomeValue()));
+    connect(editCry, SIGNAL(valueChanged(int)), SLOT(afterValue()));
     connect(editOre, SIGNAL(valueChanged(int)), SLOT(craftCountValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(cryBuyValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(oreBuyValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(oddValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(incomeValue()));
+    connect(editOre, SIGNAL(valueChanged(int)), SLOT(afterValue()));
 
 
-    /*connect(alpha, SIGNAL(valueChanged(QString)), editMoney, SLOT(setText(QString)));*/
+}
 
+void window::changeMode()
+{
+    a = selMode->currentIndex();
+    if (a == 0)
+    {
+        window::count = 156;
+        window::cost = 10;
+        window::cryCount = 1;
+        window::oreCount = 3;
+    }
+    if (a == 1)
+    {
+        window::count = 100;
+        window::cost = 25;
+        window::cryCount = 1;
+        window::oreCount = 3;
+    }
+
+    if (a == 2)
+    {
+        window::count = 100;
+        window::cost = 50;
+        window::cryCount = 2;
+        window::oreCount = 8;
+    }
+    window::alpha = selMode->currentIndex();
 }
 
 void window::craftCountValue()
 {
-    calcCreate->setText(QString::number(editMoney->value() - (editCry->value() * editOre->value())));
+    window::moneyV = editMoney->value();
+    window::cryV = editCry->value()*window::cryCount;
+    window::oreV = editOre->value()*window::oreCount;
+    window::divV = window::moneyV / (window::cryV + window::oreV);
+    totalV = window::divV*window::count;
+    calcCreate->setText(QString::number(totalV));
 }
-void window::cryBuyValue(QString)
+void window::cryBuyValue()
 {
-    calcBCry->setText("123");
+    cry = window::divV*window::cryCount;
+    calcBCry->setText(QString::number(cry));
 }
-void window::oreBuyValue(QString){}
-void window::oddValue(QString){}
-void window::incomeValue(QString){}
-void window::afterValue(QString){}
+void window::oreBuyValue()
+{
+    ore = window::divV*window::oreCount;
+    calcBOre->setText(QString::number(ore));
+}
+void window::oddValue()
+{
+    odd = editMoney->value() - float(window::cryV+window::oreV)/window::count*window::totalV;
+    calcOdd->setText(QString::number(odd));
+}
+void window::incomeValue()
+{
+    income = (window::cost - float(window::cryV+window::oreV)/window::count)*window::totalV;
+    calcIncome->setText(QString::number(income));
+}
+void window::afterValue()
+{
+    after = window::moneyV + window::income;
+    calcAfter->setText(QString::number(after));
+}
 
 window::~window()
 {

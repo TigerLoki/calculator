@@ -18,15 +18,21 @@ class window : public QMainWindow
 
 public:
     window(QWidget *parent = 0);
+    int mode, count, cost;
+    int cryCount, oreCount;
+    int divV, moneyV, cryV, oreV, totalV;
+    int cry, ore, odd, income, after, alpha, a;
     ~window();
 
 private slots:
+    //void divClass();
+    void changeMode();
     void craftCountValue();
-    void cryBuyValue(QString);
-    void oreBuyValue(QString);
-    void oddValue(QString);
-    void incomeValue(QString);
-    void afterValue(QString);
+    void cryBuyValue();
+    void oreBuyValue();
+    void oddValue();
+    void incomeValue();
+    void afterValue();
 
 private:
     QLabel *textMode;
@@ -43,13 +49,13 @@ private:
     QSpinBox *editMoney;
     QSpinBox *editCry;
     QSpinBox *editOre;
+    //QSpinBox *div;
     QTextBrowser *calcCreate;
     QTextBrowser *calcBCry;
     QTextBrowser *calcBOre;
     QTextBrowser *calcOdd;
     QTextBrowser *calcIncome;
     QTextBrowser *calcAfter;
-    QLineEdit *alpha;
 };
 
 #endif // WINDOW_H
