@@ -17,7 +17,6 @@ window::window(QWidget *parent)
     this->setCentralWidget( centralWidget );
     mainLayout = new QGridLayout( centralWidget );
 
-
     textMode = new QLabel("Выберите режим:",this);
     textMoney = new QLabel("Введите количество денег:",this);
     textCry = new QLabel("Введите стоимость кристалла:",this);
